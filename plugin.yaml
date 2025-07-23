@@ -1,5 +1,5 @@
 name: "semver"
 version: "0.2.0"
-usage: "helm semver show  -c <chart-path> or helm semver update [major|minor|patch|premajor|preminor|prepatch|prerelease] --preid [alpha|rc] -c <chart-path>"
+usage: "show or update Chart.yaml version"
 description: "A Helm plugin to update Chart.yaml version."
 command: "node $HELM_PLUGIN_DIR/build/index.js"
