@@ -12672,7 +12672,19 @@ var yaml = __toESM(require_dist());
 var path = __toESM(require("path"));
 var semver = __toESM(require_semver2());
 var program2 = new Command();
-program2.version("0.0.1").description("A Helm plugin to update Chart.yaml version.").option("-c, --chart-path <path>", "Path to the chart directory", ".").option("--preid <identifier>", "Identifier for prerelease versions (e.g., alpha, rc)").argument("<part>", "The part of the version to increment (major, minor, patch, premajor, preminor, prepatch, prerelease)").action((part, options) => {
+program2.name("helm semver").version("0.1.0").description("A Helm plugin to update Chart.yaml version.").usage("<command> [options]");
+program2.command("show").description("Show the current version of the chart").option("-c, --chart-path <path>", "Path to the chart directory", ".").action((options) => {
+  const chartPath = path.join(options.chartPath, "Chart.yaml");
+  if (!fs.existsSync(chartPath)) {
+    console.error(`Chart.yaml not found in ${options.chartPath}`);
+    process.exit(1);
+  }
+  const chartFile = fs.readFileSync(chartPath, "utf8");
+  const chart = yaml.parse(chartFile);
+  const version = chart.version || "0.1.0";
+  console.log(version);
+});
+program2.command("update").description("Increment the chart version").option("-c, --chart-path <path>", "Path to the chart directory", ".").option("--preid <identifier>", "Identifier for prerelease versions (e.g., alpha, rc)").argument("<part>", "The part of the version to increment (major, minor, patch, premajor, preminor, prepatch, prerelease)").action((part, options) => {
   const chartPath = path.join(options.chartPath, "Chart.yaml");
   if (!fs.existsSync(chartPath)) {
     console.error(`Chart.yaml not found in ${options.chartPath}`);
